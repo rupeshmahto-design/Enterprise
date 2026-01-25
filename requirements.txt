@@ -38,10 +38,10 @@ uvicorn[standard]==0.25.0  # ASGI server
 pydantic==2.5.3  # Data validation
 
 # Authentication & Security
-python3-saml==1.16.0  # SAML SSO
+# python3-saml==1.16.0  # SAML SSO - disabled for Railway (requires xmlsec system libs)
 pyjwt==2.8.0  # JWT tokens
-cryptography==41.0.7  # Required by python3-saml
-xmlsec==1.3.13  # XML security for SAML
+# cryptography==41.0.7  # Required by python3-saml - disabled
+# xmlsec==1.3.13  # XML security for SAML - disabled
 
 # Data Visualization (for admin dashboard)
 plotly==5.18.0
