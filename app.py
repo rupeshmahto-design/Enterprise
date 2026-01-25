@@ -854,10 +854,18 @@ def render_threat_assessment_form(db: Session, user: User):
             st.session_state.current_project_name = None
             st.session_state.current_assessment_id = None
             st.session_state.current_uploaded_files = []
+            # Reset all form fields
+            form_keys = [
+                "project_name", "app_type", "deployment", "criticality", 
+                "compliance", "environment", "uploaded_files"
+            ]
+            for key in form_keys:
+                if key in st.session_state:
+                    del st.session_state[key]
             # Reset framework and risk selections
             for k in list(st.session_state.keys()):
                 if k.startswith("framework_") or k.startswith("risk_"):
-                    st.session_state[k] = False
+                    del st.session_state[k]
             st.rerun()
 
     # Header
@@ -865,19 +873,22 @@ def render_threat_assessment_form(db: Session, user: User):
     
     col1, col2 = st.columns(2)
     with col1:
-        project_name = st.text_input("Project Name *", placeholder="e.g., Customer Portal Application")
+        project_name = st.text_input("Project Name *", placeholder="e.g., Customer Portal Application", key="project_name")
         app_type = st.selectbox("Application Type *", 
             ["Web Application", "Mobile Application", "API/Microservice", 
-             "Desktop Application", "Cloud Service", "IoT System", "AI/ML Platform"])
+             "Desktop Application", "Cloud Service", "IoT System", "AI/ML Platform"],
+            key="app_type")
         deployment = st.selectbox("Deployment Model *",
             ["Cloud (AWS)", "Cloud (Azure)", "Cloud (GCP)", "Cloud (Multi-Cloud)",
-             "On-Premises", "Hybrid", "Edge Computing"])
+             "On-Premises", "Hybrid", "Edge Computing"],
+            key="deployment")
     
     with col2:
-        criticality = st.selectbox("Business Criticality *", ["Critical", "High", "Medium", "Low"])
+        criticality = st.selectbox("Business Criticality *", ["Critical", "High", "Medium", "Low"], key="criticality")
         compliance = st.multiselect("Compliance Requirements",
-            ["PCI-DSS", "GDPR", "HIPAA", "SOX", "ISO 27001", "SOC 2", "NIST", "FedRAMP"])
-        environment = st.selectbox("Environment", ["Production", "Staging", "Development", "UAT", "DR/Backup"])
+            ["PCI-DSS", "GDPR", "HIPAA", "SOX", "ISO 27001", "SOC 2", "NIST", "FedRAMP"],
+            key="compliance")
+        environment = st.selectbox("Environment", ["Production", "Staging", "Development", "UAT", "DR/Backup"], key="environment")
     
     # Upload Documents
     st.markdown("## 📁 Upload Project Documents")
@@ -887,7 +898,8 @@ def render_threat_assessment_form(db: Session, user: User):
         "Choose files",
         accept_multiple_files=True,
         type=['pdf', 'docx', 'txt', 'md', 'png', 'jpg', 'jpeg', 'yaml', 'json'],
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="uploaded_files"
     )
     
     if uploaded_files:
@@ -1026,6 +1038,19 @@ def render_threat_assessment_form(db: Session, user: User):
                 st.session_state.threat_report = None
                 st.session_state.current_project_name = None
                 st.session_state.current_assessment_id = None
+                st.session_state.current_uploaded_files = []
+                # Reset all form fields
+                form_keys = [
+                    "project_name", "app_type", "deployment", "criticality", 
+                    "compliance", "environment", "uploaded_files"
+                ]
+                for key in form_keys:
+                    if key in st.session_state:
+                        del st.session_state[key]
+                # Reset framework and risk selections
+                for k in list(st.session_state.keys()):
+                    if k.startswith("framework_") or k.startswith("risk_"):
+                        del st.session_state[k]
                 st.rerun()
         
         st.markdown("---")
