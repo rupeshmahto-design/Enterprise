@@ -346,10 +346,10 @@ def create_pdf_download(report_content, project_name):
 
 def create_reportlab_table(table_data):
     """Helper to create formatted table for ReportLab"""
-    from reportlab.platypus import Table, TableStyle
+    from reportlab.platypus import Table, TableStyle, Paragraph
     from reportlab.lib import colors
-    from reportlab.platypus import Paragraph
     from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.units import inch
     
     if not table_data or len(table_data) < 1:
         return None
