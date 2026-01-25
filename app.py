@@ -1051,27 +1051,38 @@ def render_past_assessments(db: Session, user: User):
         st.info("🔍 No past assessments yet. Create your first threat assessment in the 'Threat Modeling' tab!")
         return
     
-    # Filters
+    # Filters - Initialize session state to prevent state conflicts
+    if "framework_filter" not in st.session_state:
+        st.session_state.framework_filter = "All"
+    if "risk_filter" not in st.session_state:
+        st.session_state.risk_filter = "All"
+    if "status_filter" not in st.session_state:
+        st.session_state.status_filter = "All"
+    if "date_filter" not in st.session_state:
+        st.session_state.date_filter = "All Time"
+    
     st.markdown("### 🔎 Filter Assessments")
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         # Get unique frameworks
         frameworks = sorted(list(set([a.framework for a in all_assessments if a.framework])))
-        framework_filter = st.selectbox("Filter by Framework", ["All"] + frameworks, key="framework_filter")
+        framework_options = ["All"] + frameworks
+        framework_filter = st.selectbox("Filter by Framework", framework_options, index=0, key="framework_filter")
     
     with col2:
         # Get unique risk types
         risk_types = sorted(list(set([a.risk_type for a in all_assessments if a.risk_type])))
-        risk_filter = st.selectbox("Filter by Risk Type", ["All"] + risk_types, key="risk_filter")
+        risk_options = ["All"] + risk_types
+        risk_filter = st.selectbox("Filter by Risk Type", risk_options, index=0, key="risk_filter")
     
     with col3:
         # Status filter
-        status_filter = st.selectbox("Filter by Status", ["All", "completed", "draft", "in_progress"], key="status_filter")
+        status_filter = st.selectbox("Filter by Status", ["All", "completed", "draft", "in_progress"], index=0, key="status_filter")
     
     with col4:
         # Date range
-        date_filter = st.selectbox("Date Range", ["All Time", "Last 7 Days", "Last 30 Days", "Last 90 Days"], key="date_filter")
+        date_filter = st.selectbox("Date Range", ["All Time", "Last 7 Days", "Last 30 Days", "Last 90 Days"], index=0, key="date_filter")
     
     # Apply filters
     filtered_assessments = all_assessments
