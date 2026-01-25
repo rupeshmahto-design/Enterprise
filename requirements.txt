@@ -1,0 +1,56 @@
+# Core Dependencies
+streamlit==1.29.0
+anthropic==0.8.0
+python-dotenv==1.0.0
+
+# Document Processing
+PyPDF2==3.0.1
+python-docx==1.1.0
+# Pillow pinned to be compatible with Streamlit 1.29.0 (requires pillow<11) and to use prebuilt wheels on Windows
+Pillow==10.4.0  # changed from 12.1.0 to resolve Streamlit dependency conflict
+# PDF Generation
+# WeasyPrint for HTML->PDF rendering (requires system libs on Linux; see packages.txt)
+weasyprint==61.2
+reportlab==4.0.7
+markdown==3.5.1
+beautifulsoup4==4.12.3
+
+# Data Handling
+# Allow newer pandas for compatibility with newer Python (e.g., 3.14)
+# Use a specific tested wheel where possible
+pandas==2.3.3  # updated to support Python 3.14 and newer wheels
+
+# Utilities
+requests==2.31.0
+# httpx pinned to 0.23.x for compatibility with installed Anthropic client
+httpx==0.23.3
+
+# ===== ENTERPRISE FEATURES =====
+
+# Database & ORM
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9  # PostgreSQL adapter
+alembic==1.13.1  # Database migrations
+
+# API Framework
+fastapi==0.108.0
+uvicorn[standard]==0.25.0  # ASGI server
+pydantic==2.5.3  # Data validation
+
+# Authentication & Security
+python3-saml==1.16.0  # SAML SSO
+pyjwt==2.8.0  # JWT tokens
+cryptography==41.0.7  # Required by python3-saml
+xmlsec==1.3.13  # XML security for SAML
+
+# Data Visualization (for admin dashboard)
+plotly==5.18.0
+
+# Rate Limiting & Caching
+slowapi==0.1.9  # API rate limiting
+redis==5.0.1  # Optional: for distributed rate limiting
+
+# Testing (optional but recommended)
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.23.3  # Already present, used for API testing

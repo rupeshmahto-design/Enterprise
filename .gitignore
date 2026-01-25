@@ -1,0 +1,25 @@
+# Environments
+.venv/
+venv/
+venv*/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files and secrets
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

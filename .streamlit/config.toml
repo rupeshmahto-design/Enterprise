@@ -1,0 +1,11 @@
+# Local development Streamlit config
+[server]
+# Production-safe defaults
+enableXsrfProtection = true
+# Keep default port; change if busy
+port = 8501
+# Increase if needed (MB)
+maxUploadSize = 200
+
+[browser]
+#gatherUsageStats = false
