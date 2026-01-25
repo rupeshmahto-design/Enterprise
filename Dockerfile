@@ -6,26 +6,14 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-# Install system packages required by WeasyPrint
+# Install minimal system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    # WeasyPrint deps
-    libcairo2 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libgdk-pixbuf2.0-0 \
-    shared-mime-info \
-    fonts-dejavu-core \
-    # Build tools (for some wheels)
+    # Build tools for some Python wheels
     build-essential \
     pkg-config \
     libffi-dev \
-    # SAML / xmlsec deps
-    libxml2 \
-    libxml2-dev \
-    libxmlsec1 \
-    libxmlsec1-dev \
-    libxmlsec1-openssl \
-    libssl-dev \
+    # PostgreSQL client libs
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
