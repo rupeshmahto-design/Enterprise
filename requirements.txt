@@ -10,7 +10,7 @@ python-docx==1.1.0
 Pillow==10.4.0  # changed from 12.1.0 to resolve Streamlit dependency conflict
 # PDF Generation
 # WeasyPrint for HTML->PDF rendering (requires system libs on Linux; see packages.txt)
-weasyprint==61.2
+# weasyprint==61.2  # Optional - disabled for Railway deployment
 reportlab==4.0.7
 markdown==3.5.1
 beautifulsoup4==4.12.3
