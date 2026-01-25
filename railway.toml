@@ -3,7 +3,7 @@ builder = "nixpacks"
 
 [deploy]
 startCommand = "streamlit run app.py --server.port $PORT --server.address 0.0.0.0"
-healthcheckPath = "/_stcore/health"
+healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
