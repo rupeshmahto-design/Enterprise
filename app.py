@@ -18,11 +18,43 @@ from sqlalchemy.orm import Session
 import admin_dashboard
 from auth import PasswordAuth
 from database import SessionLocal, init_db
-from models import ThreatAssessment, User
+from models import ThreatAssessment, User, Organization
 
-# Initialize database tables on startup
+# Initialize database tables and seed data on startup
 try:
     init_db()
+    # Seed initial admin user if database is empty
+    db = SessionLocal()
+    try:
+        if db.query(Organization).count() == 0:
+            from models import Organization
+            org = Organization(
+                name="Default Organization",
+                slug="default",
+                domain="example.com",
+                saml_enabled=False,
+                max_users=50
+            )
+            db.add(org)
+            db.commit()
+            db.refresh(org)
+            
+            # Create admin user
+            admin = User(
+                email="admin@example.com",
+                username="admin",
+                full_name="System Administrator",
+                password_hash=PasswordAuth.hash_password("admin123"),
+                role="super_admin",
+                is_active=True,
+                is_org_admin=True,
+                organization_id=org.id
+            )
+            db.add(admin)
+            db.commit()
+            print("✅ Database initialized with default admin user")
+    finally:
+        db.close()
 except Exception as e:
     print(f"Database initialization: {e}")
 
