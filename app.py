@@ -163,6 +163,25 @@ st.markdown("""
         padding: 0.75rem 1.25rem;
     }
     
+    /* Pin Button Styling */
+    [data-testid="stSidebar"] button[key="pin_toggle"] {
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%) !important;
+        color: white !important;
+        border-radius: 10px !important;
+        font-weight: 700 !important;
+        border: none !important;
+        padding: 0.75rem 0.875rem !important;
+        font-size: 1.1rem !important;
+        box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    [data-testid="stSidebar"] button[key="pin_toggle"]:hover {
+        background: linear-gradient(135deg, var(--accent-secondary) 0%, #14b8a6 100%) !important;
+        box-shadow: 0 6px 16px rgba(8, 145, 178, 0.3) !important;
+        transform: translateY(-2px) !important;
+    }
+    
     /* Enterprise Buttons - Premium Styling */
     .stButton>button {
         background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
@@ -1335,26 +1354,32 @@ def render_login(db: Session):
 def render_sidebar(user: User):
     # Sidebar Pin Toggle Button (always visible)
     with st.sidebar:
-        col1, col2, col3 = st.columns([1, 4, 1])
+        col1, col2, col3 = st.columns([2, 3, 1])
         with col3:
-            if st.button("📌" if st.session_state.sidebar_pinned else "📍", key="pin_toggle", help="Pin/Unpin sidebar"):
+            if st.button("📌" if st.session_state.sidebar_pinned else "📍", key="pin_toggle", help="Pin/Unpin sidebar", use_container_width=True):
                 st.session_state.sidebar_pinned = not st.session_state.sidebar_pinned
-                st.rerun()
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Enterprise Logo/Brand Section
+        # Enterprise Logo/Brand Section - Professional Design
         st.markdown("""
             <div style="
-                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-                padding: 1.5rem;
-                border-radius: 14px;
-                margin-bottom: 2rem;
+                background: linear-gradient(135deg, #0d1b2a 0%, #1a2f4a 100%);
+                padding: 2rem 1.5rem;
+                border-radius: 16px;
+                margin-bottom: 2.5rem;
                 text-align: center;
                 color: white;
+                box-shadow: 0 6px 20px rgba(13, 27, 42, 0.3);
+                border: 1px solid rgba(8, 145, 178, 0.2);
+                position: relative;
+                overflow: hidden;
             ">
-                <h2 style="color: white !important; margin: 0 0 0.5rem 0; font-size: 1.5rem;">🛡️ SecureAI</h2>
-                <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.85rem; font-weight: 500;">Threat Assessment Platform</p>
+                <div style="position: relative; z-index: 2;">
+                    <h2 style="color: white !important; margin: 0 0 0.75rem 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.01em;">🛡️ SecureAI</h2>
+                    <div style="height: 3px; background: linear-gradient(90deg, #0891b2, #06b6d4); margin: 0.75rem 0; border-radius: 10px;"></div>
+                    <p style="color: rgba(255,255,255,0.95); margin: 0.75rem 0 0 0; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em;">Threat Assessment Platform</p>
+                </div>
             </div>
         """, unsafe_allow_html=True)
         
@@ -1479,28 +1504,6 @@ def render_sidebar(user: User):
             st.session_state.user_id = None
             st.session_state.user = None
             st.rerun()
-        
-        # Sidebar Auto-Hide JavaScript (only if not pinned)
-        if not st.session_state.sidebar_pinned:
-            st.markdown("""
-                <script>
-                setTimeout(function() {
-                    const sidebar = document.querySelector('[data-testid="stSidebar"]');
-                    const sidebarToggle = document.querySelector('[data-testid="collapseSidebarButton"]');
-                    
-                    if (sidebar) {
-                        // Hide sidebar on mouse leave
-                        sidebar.addEventListener('mouseleave', function() {
-                            if (sidebarToggle) {
-                                sidebarToggle.click();
-                            }
-                        });
-                        
-                        // Show on mouse enter (will re-render so not needed here)
-                    }
-                }, 500);
-                </script>
-            """, unsafe_allow_html=True)
 
 
 def render_threat_assessment_form(db: Session, user: User):
