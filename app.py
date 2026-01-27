@@ -66,10 +66,29 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for professional SaaS UI
+# Custom CSS for enterprise-grade professional UI
 st.markdown("""
     <style>
-    /* Global Styles - Professional SaaS Design */
+    /* Enterprise Color Palette */
+    :root {
+        --primary-dark: #0d1b2a;
+        --primary: #1a2f4a;
+        --primary-light: #2a4a6e;
+        --accent-primary: #0891b2;
+        --accent-secondary: #06b6d4;
+        --accent-tertiary: #14b8a6;
+        --success: #059669;
+        --warning: #d97706;
+        --danger: #dc2626;
+        --neutral-50: #f9fafb;
+        --neutral-100: #f3f4f6;
+        --neutral-200: #e5e7eb;
+        --neutral-300: #d1d5db;
+        --neutral-600: #4b5563;
+        --neutral-900: #111827;
+    }
+    
+    /* Global Styles - Enterprise Professional Design */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
     * {
@@ -77,10 +96,10 @@ st.markdown("""
         letter-spacing: -0.01em;
     }
     
-    /* Main Layout */
+    /* Main Layout - Sophisticated Background */
     .main {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        padding: 2rem 3rem;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 50%, #eff2f5 100%);
+        padding: 2.5rem 3rem;
     }
     
     .block-container {
@@ -88,69 +107,91 @@ st.markdown("""
         padding: 2rem 1rem;
     }
     
-    /* Typography - Modern SaaS Style */
+    /* Typography - Enterprise Hierarchy */
     h1 {
-        color: #0f172a !important;
+        color: var(--primary-dark) !important;
         font-weight: 800 !important;
-        font-size: 2.5rem !important;
-        margin-bottom: 0.5rem !important;
-        background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        font-size: 2.75rem !important;
+        margin-bottom: 0.75rem !important;
+        letter-spacing: -0.02em !important;
     }
     
     h2 {
-        color: #1e293b !important;
+        color: var(--primary-dark) !important;
         font-weight: 700 !important;
-        font-size: 1.75rem !important;
-        margin-top: 2rem !important;
-        margin-bottom: 1.5rem !important;
-        padding-bottom: 0.75rem !important;
-        border-bottom: 2px solid #e2e8f0 !important;
+        font-size: 1.875rem !important;
+        margin-top: 2.5rem !important;
+        margin-bottom: 1.75rem !important;
+        padding-bottom: 1rem !important;
+        border-bottom: 3px solid var(--accent-primary) !important;
     }
     
     h3 {
-        color: #334155 !important;
-        font-weight: 600 !important;
-        font-size: 1.25rem !important;
+        color: var(--primary) !important;
+        font-weight: 700 !important;
+        font-size: 1.375rem !important;
         margin-top: 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    h4 {
+        color: var(--primary) !important;
+        font-weight: 600 !important;
+        font-size: 1.125rem !important;
     }
     
     p {
-        color: #475569;
-        line-height: 1.6;
+        color: var(--neutral-600);
+        line-height: 1.7;
+        font-weight: 400;
     }
     
     /* Professional Sidebar */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-        border-right: 1px solid #e2e8f0;
-        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.03);
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafb 100%);
+        border-right: 1px solid var(--neutral-200);
+        box-shadow: 4px 0 20px rgba(13, 27, 42, 0.08);
     }
     
     [data-testid="stSidebar"] .element-container {
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1.25rem;
     }
     
-    /* Modern Buttons - SaaS Style */
+    /* Enterprise Buttons - Premium Styling */
     .stButton>button {
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
         color: white !important;
-        border-radius: 10px !important;
+        border-radius: 12px !important;
         font-weight: 600 !important;
         border: none !important;
-        padding: 0.75rem 1.5rem !important;
-        font-size: 0.95rem !important;
-        letter-spacing: -0.01em !important;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
+        padding: 0.875rem 1.75rem !important;
+        font-size: 0.975rem !important;
+        letter-spacing: -0.005em !important;
+        box-shadow: 0 6px 20px rgba(13, 27, 42, 0.15) !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stButton>button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        transition: left 0.3s ease;
     }
     
     .stButton>button:hover {
-        background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%) !important;
-        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35) !important;
+        background: linear-gradient(135deg, #163a52 0%, var(--primary) 100%) !important;
+        box-shadow: 0 10px 30px rgba(8, 145, 178, 0.25) !important;
         transform: translateY(-2px) !important;
+    }
+    
+    .stButton>button:hover::before {
+        left: 100%;
     }
     
     .stButton>button:active {
@@ -160,102 +201,131 @@ st.markdown("""
     /* Secondary Buttons */
     .stButton>button[kind="secondary"] {
         background: white !important;
-        color: #4f46e5 !important;
-        border: 2px solid #e2e8f0 !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+        color: var(--primary) !important;
+        border: 2px solid var(--accent-primary) !important;
+        box-shadow: 0 3px 10px rgba(13, 27, 42, 0.05) !important;
+    }
+    
+    .stButton>button[kind="secondary"]:hover {
+        background: var(--neutral-50) !important;
+        border-color: var(--primary-light) !important;
     }
     
     /* Professional Input Fields */
     .stTextInput>div>div>input,
     .stSelectbox>div>div>select,
     .stMultiSelect>div>div>div,
-    .stTextArea>div>div>textarea {
-        border: 2px solid #e2e8f0 !important;
-        border-radius: 10px !important;
-        padding: 0.75rem 1rem !important;
-        font-size: 0.95rem !important;
+    .stTextArea>div>div>textarea,
+    .stNumberInput>div>div>input {
+        border: 2px solid var(--neutral-200) !important;
+        border-radius: 12px !important;
+        padding: 0.875rem 1.25rem !important;
+        font-size: 0.975rem !important;
         background: white !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.25s ease !important;
+        box-shadow: 0 2px 6px rgba(13, 27, 42, 0.05) !important;
+        color: var(--neutral-900) !important;
     }
     
     .stTextInput>div>div>input:focus,
     .stSelectbox>div>div>select:focus,
     .stTextArea>div>div>textarea:focus {
-        border-color: #4f46e5 !important;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+        border-color: var(--accent-primary) !important;
+        box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1) !important;
         outline: none !important;
     }
     
-    /* Professional Cards */
+    /* Premium Cards */
     .framework-card {
         background: white !important;
-        border: 2px solid #e2e8f0 !important;
-        padding: 1.75rem !important;
+        border: 2px solid var(--neutral-200) !important;
+        padding: 2rem !important;
         border-radius: 16px !important;
         margin: 1rem 0 !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        box-shadow: 0 4px 12px rgba(13, 27, 42, 0.06) !important;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .framework-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
     
     .framework-card:hover {
-        border-color: #cbd5e1 !important;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
-        transform: translateY(-2px) !important;
+        border-color: var(--accent-primary) !important;
+        box-shadow: 0 12px 32px rgba(8, 145, 178, 0.12) !important;
+        transform: translateY(-4px) !important;
+    }
+    
+    .framework-card:hover::before {
+        opacity: 1;
     }
     
     .framework-card.selected {
-        background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
-        border-color: #4f46e5 !important;
-        box-shadow: 0 8px 24px rgba(79, 70, 229, 0.15) !important;
+        background: linear-gradient(135deg, #f0f9fb 0%, #ecf8fb 100%) !important;
+        border-color: var(--accent-primary) !important;
+        box-shadow: 0 12px 32px rgba(8, 145, 178, 0.15) !important;
+        border-left: 5px solid var(--accent-primary) !important;
     }
     
     /* Risk Cards */
     .risk-card {
         background: white !important;
-        border: 2px solid #e2e8f0 !important;
-        padding: 1.5rem !important;
+        border: 2px solid var(--neutral-200) !important;
+        padding: 1.75rem !important;
         border-radius: 14px !important;
         margin: 0.75rem 0 !important;
         transition: all 0.25s ease !important;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+        box-shadow: 0 2px 8px rgba(13, 27, 42, 0.04) !important;
     }
     
     .risk-card:hover {
-        border-color: #4f46e5 !important;
-        box-shadow: 0 6px 16px rgba(79, 70, 229, 0.1) !important;
+        border-color: var(--accent-secondary) !important;
+        box-shadow: 0 8px 20px rgba(8, 145, 178, 0.08) !important;
+        transform: translateY(-2px) !important;
     }
     
-    /* File Upload - Professional Design */
+    /* Professional File Upload */
     .upload-box {
-        border: 3px dashed #cbd5e1 !important;
+        border: 3px dashed var(--accent-primary) !important;
         border-radius: 16px !important;
-        padding: 3rem 2rem !important;
+        padding: 3.5rem 2rem !important;
         text-align: center !important;
-        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%) !important;
-        margin: 1.5rem 0 !important;
+        background: linear-gradient(135deg, #f0f9fb 0%, #ecf8fb 100%) !important;
+        margin: 2rem 0 !important;
         transition: all 0.3s ease !important;
     }
     
     .upload-box:hover {
-        border-color: #4f46e5 !important;
-        background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%) !important;
+        border-color: var(--accent-secondary) !important;
+        background: linear-gradient(135deg, #e0f2fe 0%, #cffafe 100%) !important;
+        transform: scale(1.01) !important;
     }
     
     [data-testid="stFileUploader"] {
         background: white;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1.5rem;
+        border: 2px solid var(--neutral-200);
+        border-radius: 14px;
+        padding: 1.75rem;
+        box-shadow: 0 2px 8px rgba(13, 27, 42, 0.05);
     }
     
-    /* Hero Banner - Premium Look */
+    /* Enterprise Hero Banner */
     .hero-banner {
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #8b5cf6 100%);
-        padding: 3.5rem 3rem;
-        border-radius: 20px;
-        margin-bottom: 2.5rem;
-        box-shadow: 0 20px 50px rgba(79, 70, 229, 0.25);
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--primary-light) 100%);
+        padding: 4rem 3rem;
+        border-radius: 24px;
+        margin-bottom: 3rem;
+        box-shadow: 0 20px 50px rgba(13, 27, 42, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         position: relative;
         overflow: hidden;
     }
@@ -263,234 +333,294 @@ st.markdown("""
     .hero-banner::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        opacity: 0.3;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(8, 145, 178, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    
+    .hero-banner::after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        left: -5%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(20, 184, 166, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
     }
     
     .hero-banner h1 {
         color: white !important;
-        font-size: 3rem !important;
+        font-size: 3.25rem !important;
         font-weight: 800 !important;
-        margin-bottom: 0.75rem !important;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 1rem !important;
+        text-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         background: none !important;
         -webkit-text-fill-color: white !important;
+        position: relative;
+        z-index: 2;
     }
     
     .hero-banner p {
         color: rgba(255, 255, 255, 0.95) !important;
-        font-size: 1.25rem !important;
+        font-size: 1.35rem !important;
         font-weight: 500 !important;
         margin: 0 !important;
+        position: relative;
+        z-index: 2;
     }
     
-    /* Tabs - Modern Design */
+    /* Modern Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 1rem;
+        gap: 0.5rem;
         background: white;
-        padding: 1rem;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        border: 1px solid #e2e8f0;
+        padding: 1.25rem;
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(13, 27, 42, 0.06);
+        border: 1px solid var(--neutral-200);
     }
     
     .stTabs [data-baseweb="tab"] {
-        height: 3.5rem;
-        padding: 0 2rem;
+        height: 3.75rem;
+        padding: 0 2.25rem;
         background: transparent;
-        border-radius: 8px;
-        color: #64748b;
+        border-radius: 10px;
+        color: var(--neutral-600);
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 1.05rem;
         border: none;
-        transition: all 0.2s ease;
+        transition: all 0.25s ease;
+        box-shadow: none !important;
     }
     
     .stTabs [data-baseweb="tab"]:hover {
-        background: #f8fafc;
-        color: #4f46e5;
+        background: var(--neutral-100);
+        color: var(--primary);
     }
     
     .stTabs [data-baseweb="tab"][aria-selected="true"] {
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
         color: white;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        box-shadow: 0 6px 20px rgba(8, 145, 178, 0.25) !important;
     }
     
-    /* Tables - Professional Style */
+    /* Professional Tables */
     .dataframe {
         border: none !important;
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         overflow: hidden !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: 0 3px 12px rgba(13, 27, 42, 0.06) !important;
     }
     
     .dataframe th {
-        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
         color: white !important;
-        font-weight: 600 !important;
-        padding: 1rem !important;
+        font-weight: 700 !important;
+        padding: 1.25rem !important;
         text-align: left !important;
         border: none !important;
+        font-size: 0.95rem !important;
     }
     
     .dataframe td {
-        padding: 0.875rem 1rem !important;
-        border-bottom: 1px solid #f1f5f9 !important;
+        padding: 1rem 1.25rem !important;
+        border-bottom: 1px solid var(--neutral-200) !important;
+        color: var(--neutral-900) !important;
+        font-size: 0.95rem !important;
     }
     
     .dataframe tr:hover {
-        background: #f8fafc !important;
+        background: var(--neutral-50) !important;
     }
     
-    /* Metrics - Dashboard Style */
+    /* Enterprise Metrics */
     [data-testid="stMetricValue"] {
-        font-size: 2.25rem !important;
-        font-weight: 700 !important;
-        color: #0f172a !important;
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        color: var(--primary-dark) !important;
     }
     
     [data-testid="stMetricLabel"] {
-        font-size: 0.9rem !important;
-        font-weight: 600 !important;
-        color: #64748b !important;
+        font-size: 0.875rem !important;
+        font-weight: 700 !important;
+        color: var(--neutral-600) !important;
         text-transform: uppercase !important;
-        letter-spacing: 0.05em !important;
+        letter-spacing: 0.1em !important;
     }
     
-    /* Status Badges */
-    .status-badge {
-        display: inline-block;
-        padding: 0.375rem 0.875rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.025em;
+    /* Professional Messages */
+    .stSuccess, .stInfo, .stWarning, .stError {
+        border-radius: 14px !important;
+        border-left: 5px solid !important;
+        padding: 1.25rem 1.75rem !important;
+        font-weight: 500 !important;
+        font-size: 0.975rem !important;
     }
     
-    .status-critical {
-        background: #fee2e2;
-        color: #991b1b;
-        border: 1px solid #fecaca;
+    .stSuccess {
+        border-left-color: var(--success) !important;
+        background-color: rgba(5, 150, 105, 0.05) !important;
+        color: #047857 !important;
     }
     
-    .status-high {
-        background: #fed7aa;
-        color: #9a3412;
-        border: 1px solid #fdba74;
+    .stInfo {
+        border-left-color: var(--accent-primary) !important;
+        background-color: rgba(8, 145, 178, 0.05) !important;
+        color: var(--accent-primary) !important;
     }
     
-    .status-medium {
-        background: #fef3c7;
-        color: #92400e;
-        border: 1px solid #fde68a;
+    .stWarning {
+        border-left-color: var(--warning) !important;
+        background-color: rgba(217, 119, 6, 0.05) !important;
+        color: #b45309 !important;
     }
     
-    .status-low {
-        background: #d1fae5;
-        color: #065f46;
-        border: 1px solid #a7f3d0;
+    .stError {
+        border-left-color: var(--danger) !important;
+        background-color: rgba(220, 38, 38, 0.05) !important;
+        color: #991b1b !important;
     }
     
-    /* Expanders - Clean Design */
+    /* Expanders - Enterprise Style */
     .streamlit-expanderHeader {
         background: white !important;
-        border: 2px solid #e2e8f0 !important;
+        border: 2px solid var(--neutral-200) !important;
         border-radius: 12px !important;
-        padding: 1rem 1.5rem !important;
+        padding: 1.25rem 1.75rem !important;
         font-weight: 600 !important;
-        color: #1e293b !important;
+        color: var(--primary-dark) !important;
         transition: all 0.2s ease !important;
     }
     
     .streamlit-expanderHeader:hover {
-        background: #f8fafc !important;
-        border-color: #cbd5e1 !important;
+        background: var(--neutral-50) !important;
+        border-color: var(--accent-primary) !important;
+        color: var(--accent-primary) !important;
     }
     
-    /* Checkboxes - Modern Style */
+    /* Checkboxes */
     .stCheckbox {
-        padding: 0.5rem 0;
+        padding: 0.75rem 0;
     }
     
     .stCheckbox > label {
-        font-weight: 500 !important;
-        color: #334155 !important;
+        font-weight: 600 !important;
+        color: var(--primary) !important;
+        font-size: 1rem !important;
     }
     
-    /* Success/Info/Warning Messages */
-    .stSuccess, .stInfo, .stWarning, .stError {
-        border-radius: 12px !important;
-        border-left-width: 4px !important;
-        padding: 1rem 1.5rem !important;
-        font-weight: 500 !important;
-    }
-    
-    /* Loading Spinner */
-    .stSpinner > div {
-        border-top-color: #4f46e5 !important;
-    }
-    
-    /* Dividers */
+    /* Professional Dividers */
     hr {
-        margin: 2rem 0 !important;
+        margin: 2.5rem 0 !important;
         border: none !important;
-        border-top: 2px solid #e2e8f0 !important;
+        border-top: 2px solid var(--neutral-200) !important;
     }
     
     /* Configuration Section */
     .config-section {
         background: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        margin: 1rem 0;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        border-radius: 14px;
+        border: 2px solid var(--neutral-200);
+        margin: 1.5rem 0;
+        box-shadow: 0 3px 12px rgba(13, 27, 42, 0.05);
+        transition: all 0.2s ease;
     }
     
-    /* Account Info Badge */
+    .config-section:hover {
+        border-color: var(--accent-primary);
+        box-shadow: 0 6px 20px rgba(8, 145, 178, 0.08);
+    }
+    
+    /* Account Badge - Enterprise */
     .account-badge {
-        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-        padding: 1rem;
-        border-radius: 10px;
-        border: 1px solid #bbf7d0;
-        margin: 0.5rem 0;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+        padding: 1.25rem;
+        border-radius: 12px;
+        border: 2px solid var(--accent-tertiary);
+        margin: 1rem 0;
+        color: var(--primary-dark);
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1);
     }
     
     /* Admin Badge */
     .admin-badge {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-        padding: 0.75rem 1rem;
-        border-radius: 8px;
-        border: 1px solid #fcd34d;
-        font-weight: 600;
-        color: #92400e;
-        margin: 0.5rem 0;
+        background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+        padding: 0.875rem 1.25rem;
+        border-radius: 10px;
+        border: 2px solid #fbbf24;
+        font-weight: 700;
+        color: #78350f;
+        margin: 0.75rem 0;
+        box-shadow: 0 3px 10px rgba(217, 119, 6, 0.15);
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
     }
     
-    /* Scrollbar Styling */
+    /* Risk Level Badges */
+    .risk-badge-critical {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #7f1d1d;
+        border: 2px solid #fca5a5;
+    }
+    
+    .risk-badge-high {
+        background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+        color: #7c2d12;
+        border: 2px solid #fb923c;
+    }
+    
+    .risk-badge-medium {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #78350f;
+        border: 2px solid #fcd34d;
+    }
+    
+    .risk-badge-low {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+        border: 2px solid #6ee7b7;
+    }
+    
+    /* Loading Spinner */
+    .stSpinner > div {
+        border-top-color: var(--accent-primary) !important;
+    }
+    
+    /* Professional Scrollbar */
     ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+        width: 12px;
+        height: 12px;
     }
     
     ::-webkit-scrollbar-track {
-        background: #f1f5f9;
+        background: var(--neutral-100);
         border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
+        background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
         border-radius: 10px;
+        border: 2px solid var(--neutral-100);
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
+        background: linear-gradient(180deg, var(--primary), var(--primary-light));
+    }
+    
+    /* Professional Labels */
+    .label-text {
+        font-weight: 700;
+        color: var(--primary-dark);
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -1171,18 +1301,37 @@ def render_login(db: Session):
 
 def render_sidebar(user: User):
     with st.sidebar:
+        # Enterprise Logo/Brand Section
+        st.markdown("""
+            <div style="
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+                padding: 1.5rem;
+                border-radius: 14px;
+                margin-bottom: 2rem;
+                text-align: center;
+                color: white;
+            ">
+                <h2 style="color: white !important; margin: 0 0 0.5rem 0; font-size: 1.5rem;">🛡️ SecureAI</h2>
+                <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.85rem; font-weight: 500;">Threat Assessment Platform</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
         # Professional Account Section
-        st.markdown('<div style="margin-bottom: 1.5rem;">', unsafe_allow_html=True)
-        st.markdown("### 👤 Account")
-        st.markdown(f'<div class="account-badge">✉️ <b>{user.email}</b></div>', unsafe_allow_html=True)
+        st.markdown("### 👤 Account Information")
+        st.markdown(f"""
+            <div class="account-badge">
+                <div style="font-size: 0.85rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-bottom: 0.5rem;">Email</div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: var(--primary-dark);">{user.email}</div>
+            </div>
+        """, unsafe_allow_html=True)
+        
         if user.is_org_admin or user.role == "super_admin":
             st.markdown('<div class="admin-badge">🔑 Administrator Access</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown("---")
         
-        # Professional API Configuration Section
-        st.markdown("### ⚙️ Configuration")
+        # API Configuration Section with Enhanced Styling
+        st.markdown("### 🔐 SecureAI API Configuration")
         st.markdown('<div class="config-section">', unsafe_allow_html=True)
         
         # Get current API key from environment
@@ -1190,11 +1339,11 @@ def render_sidebar(user: User):
         is_placeholder = current_key.startswith("sk-ant-api03-CHANGE")
         
         if is_placeholder or not current_key:
-            st.warning("⚠️ API Key not configured")
+            st.warning("⚠️ API key not configured. Assessment generation unavailable.")
         else:
-            st.success("✓ API Key configured")
+            st.success("✅ API key configured and active")
         
-        st.markdown('<p style="color: #64748b; font-size: 0.875rem; margin: 0.5rem 0;">SecureAI API Key</p>', unsafe_allow_html=True)
+        st.markdown('<p class="label-text">API Key</p>', unsafe_allow_html=True)
         
         # API Key input
         if 'api_key_input' not in st.session_state:
@@ -1205,7 +1354,7 @@ def render_sidebar(user: User):
             type="password",
             value=st.session_state.api_key_input,
             placeholder="sk-ant-api03-...",
-            help="Enter your SecureAI API key to enable threat assessments",
+            help="Your SecureAI API key for threat assessment generation",
             label_visibility="collapsed"
         )
         
@@ -1213,48 +1362,72 @@ def render_sidebar(user: User):
             st.session_state.api_key_input = api_key
             # Update environment variable for current session
             os.environ["ANTHROPIC_API_KEY"] = api_key
-            st.success("✓ API Key updated")
+            st.success("✅ API key updated for this session")
 
-        # Optional persistence to .env when explicitly requested
+        # Optional persistence to .env
+        st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin: 1.5rem 0 0.75rem 0; font-weight: 600;">Storage Options</p>', unsafe_allow_html=True)
         save_toggle = st.checkbox(
-            "💾 Save to .env for this device",
+            "Save API key securely on this device",
             value=False,
-            help="Writes ANTHROPIC_API_KEY to the project's .env file"
+            help="Stores ANTHROPIC_API_KEY in your local .env file"
         )
-        if st.button("Save Key", use_container_width=True, type="secondary"):
-            if not api_key:
-                st.error("Please enter a key first")
-            elif not save_toggle:
-                st.warning("Enable save option first")
-            else:
-                try:
-                    from pathlib import Path
-                    env_path = Path(__file__).parent / ".env"
-                    content = ""
-                    if env_path.exists():
-                        content = env_path.read_text(encoding="utf-8")
-                    lines = content.splitlines() if content else []
-                    written = False
-                    new_lines = []
-                    for line in lines:
-                        if line.strip().startswith("ANTHROPIC_API_KEY="):
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("💾 Save", use_container_width=True):
+                if not api_key:
+                    st.error("Please enter a key first")
+                elif not save_toggle:
+                    st.warning("Enable storage option first")
+                else:
+                    try:
+                        from pathlib import Path
+                        env_path = Path(__file__).parent / ".env"
+                        content = ""
+                        if env_path.exists():
+                            content = env_path.read_text(encoding="utf-8")
+                        lines = content.splitlines() if content else []
+                        written = False
+                        new_lines = []
+                        for line in lines:
+                            if line.strip().startswith("ANTHROPIC_API_KEY="):
+                                new_lines.append(f"ANTHROPIC_API_KEY={api_key}")
+                                written = True
+                            else:
+                                new_lines.append(line)
+                        if not written:
                             new_lines.append(f"ANTHROPIC_API_KEY={api_key}")
-                            written = True
-                        else:
-                            new_lines.append(line)
-                    if not written:
-                        new_lines.append(f"ANTHROPIC_API_KEY={api_key}")
-                    env_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
-                    # Update current process env as well
-                    os.environ["ANTHROPIC_API_KEY"] = api_key
-                    st.success("✓ Saved to .env")
-                except Exception as e:
-                    st.error(f"Failed: {e}")
+                        env_path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+                        os.environ["ANTHROPIC_API_KEY"] = api_key
+                        st.success("✅ Saved to .env")
+                    except Exception as e:
+                        st.error(f"Failed: {e}")
+        
+        with col2:
+            if st.button("🔄 Clear", use_container_width=True):
+                st.session_state.api_key_input = ""
+                os.environ.pop("ANTHROPIC_API_KEY", None)
+                st.info("API key cleared")
         
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown("---")
         
-        if st.button("🚪 Sign Out", use_container_width=True, type="secondary"):
+        # Help & Support Section
+        st.markdown("### 📚 Help & Support")
+        st.markdown("""
+            <div style="background: #f9fafb; padding: 1.25rem; border-radius: 12px; border: 2px solid var(--neutral-200);">
+                <p style="font-size: 0.9rem; color: var(--neutral-600); margin: 0 0 0.5rem 0;">
+                    <strong>Need help?</strong> Contact support@secureai.example.com
+                </p>
+                <p style="font-size: 0.85rem; color: var(--neutral-600); margin: 0.75rem 0 0 0;">
+                    📖 <a href="#" style="color: var(--accent-primary); text-decoration: none; font-weight: 600;">Documentation</a>
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        if st.button("🚪 Sign Out", use_container_width=True):
             # Clear SecureAI key on logout
             st.session_state.api_key_input = ""
             try:
@@ -1676,12 +1849,15 @@ def main():
 
         render_sidebar(user)
         
-        # Professional Hero Banner
+        # Enterprise Hero Banner with Enhanced Styling
         st.markdown(
             """
             <div class='hero-banner' style='position: relative; z-index: 1;'>
-                <h1 style='text-align: center; margin-bottom: 0.5rem;'>🚀 AI-Powered Threat Modeling</h1>
-                <p style='text-align: center; font-size: 1.15rem; opacity: 0.95;'>Enterprise-grade security assessments powered by SecureAI</p>
+                <div style='position: relative; z-index: 3; text-align: center;'>
+                    <h1 style='text-align: center; margin-bottom: 0.75rem; font-size: 3.5rem;'>🛡️ Enterprise Threat Assessment</h1>
+                    <p style='text-align: center; font-size: 1.35rem; opacity: 0.95; margin: 0; font-weight: 500;'>AI-Powered Security Analysis Platform</p>
+                    <p style='text-align: center; font-size: 1rem; opacity: 0.85; margin-top: 1rem;'>Comprehensive threat modeling using industry-standard frameworks</p>
+                </div>
             </div>
             """,
             unsafe_allow_html=True,
