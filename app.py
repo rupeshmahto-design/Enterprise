@@ -264,26 +264,72 @@ st.markdown("""
     
     /* Professional Input Fields */
     .stTextInput>div>div>input,
-    .stSelectbox>div>div>select,
-    .stMultiSelect>div>div>div,
-    .stTextArea>div>div>textarea,
     .stNumberInput>div>div>input {
-        border: 2px solid var(--neutral-200) !important;
+        border: 1.75px solid #dbe3ed !important;
         border-radius: 12px !important;
-        padding: 0.875rem 1.25rem !important;
+        padding: 0.9rem 1.1rem !important;
         font-size: 0.975rem !important;
-        background: white !important;
+        background: linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%) !important;
         transition: all 0.25s ease !important;
-        box-shadow: 0 2px 6px rgba(13, 27, 42, 0.05) !important;
+        box-shadow: 0 2px 8px rgba(13, 27, 42, 0.05) !important;
         color: var(--neutral-900) !important;
+        height: 52px !important;
+    }
+
+    .stTextInput>div>div>input::placeholder {
+        color: #94a3b8 !important;
+    }
+
+    .stSelectbox>div>div,
+    .stMultiSelect>div>div {
+        border: 1.75px solid #dbe3ed !important;
+        border-radius: 12px !important;
+        background: linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%) !important;
+        box-shadow: 0 2px 8px rgba(13, 27, 42, 0.05) !important;
+        transition: all 0.25s ease !important;
+        padding: 0.35rem 0.65rem !important;
+        min-height: 52px !important;
+    }
+
+    .stSelectbox>div>div:focus-within,
+    .stMultiSelect>div>div:focus-within {
+        border-color: var(--accent-primary) !important;
+        box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1) !important;
+        outline: none !important;
+    }
+
+    .stSelectbox>div>div>div,
+    .stMultiSelect>div>div>div {
+        padding-left: 0.35rem !important;
+    }
+
+    .stTextArea>div>div>textarea {
+        border: 1.75px solid #dbe3ed !important;
+        border-radius: 12px !important;
+        padding: 1rem 1.1rem !important;
+        font-size: 0.975rem !important;
+        background: linear-gradient(180deg, #f8fafc 0%, #f3f6fb 100%) !important;
+        transition: all 0.25s ease !important;
+        box-shadow: 0 2px 8px rgba(13, 27, 42, 0.05) !important;
+        color: var(--neutral-900) !important;
+        min-height: 120px !important;
     }
     
     .stTextInput>div>div>input:focus,
-    .stSelectbox>div>div>select:focus,
     .stTextArea>div>div>textarea:focus {
         border-color: var(--accent-primary) !important;
         box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1) !important;
         outline: none !important;
+    }
+
+    /* Input labels */
+    .stSelectbox label,
+    .stMultiSelect label,
+    .stTextInput label,
+    .stNumberInput label {
+        color: #1f2937 !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
     }
     
     /* Premium Cards */
