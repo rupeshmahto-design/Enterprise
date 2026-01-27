@@ -1586,10 +1586,10 @@ def render_threat_assessment_form(db: Session, user: User):
             st.session_state.current_project_name = None
             st.session_state.current_assessment_id = None
             st.session_state.current_uploaded_files = []
-            # Reset all form fields
+            # Reset all form fields (exclude widget keys like uploaded_files)
             form_keys = [
                 "project_name", "app_type", "deployment", "criticality", 
-                "compliance", "environment", "uploaded_files"
+                "compliance", "environment"
             ]
             for key in form_keys:
                 if key in st.session_state:
