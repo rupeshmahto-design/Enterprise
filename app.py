@@ -1059,7 +1059,22 @@ def create_pdf_download(report_content, project_name):
             # Format inline markdown
             line = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', line)
             line = re.sub(r'`(.+?)`', r'<font face="Courier" size="8">\1</font>', line)
-            # Escape special XML chars
+            
+            # Fix malformed HTML tags
+            line = re.sub(r'<b>(CRITICAL|HIGH|MEDIUM|LOW|P0|P1|P2)<b>', r'\1', line)
+            line = re.sub(r'<b>(CRITICAL|HIGH|MEDIUM|LOW|P0|P1|P2)</b>', r'\1', line)
+            line = re.sub(r'<b>([^<]+)<b>', r'<b>\1</b>', line)  # Fix other malformed bold tags
+            
+            # Apply color formatting for risk levels in regular text
+            line = re.sub(r'\b(CRITICAL)\b', r'<font color="#dc2626"><b>\1</b></font>', line)
+            line = re.sub(r'\b(HIGH)\b', r'<font color="#ea580c"><b>\1</b></font>', line)
+            line = re.sub(r'\b(MEDIUM)\b', r'<font color="#ca8a04"><b>\1</b></font>', line)
+            line = re.sub(r'\b(LOW)\b', r'<font color="#16a34a"><b>\1</b></font>', line)
+            line = re.sub(r'\b(P0)\b', r'<font color="#dc2626"><b>\1</b></font>', line)
+            line = re.sub(r'\b(P1)\b', r'<font color="#ea580c"><b>\1</b></font>', line)
+            line = re.sub(r'\b(P2)\b', r'<font color="#ca8a04"><b>\1</b></font>', line)
+            
+            # Escape special XML chars but preserve our formatting tags
             line = line.replace('&', '&amp;').replace('<b>', '<<<B>>>').replace('</b>', '<<</B>>>').replace('<font', '<<<FONT').replace('</font>', '<<</FONT>>>')
             line = line.replace('<<<B>>>', '<b>').replace('<<</B>>>', '</b>').replace('<<<FONT', '<font').replace('<<</FONT>>>', '</font>')
             
