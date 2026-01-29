@@ -1949,8 +1949,8 @@ def render_past_assessments(db: Session, user: User):
             project_groups[proj_num].append(assessment)
         
         # Display each project group
-        for project_number in sorted(project_groups.keys(), reverse=(project_number != "No Project Number")):
-            assessments_in_project = sorted(project_groups[project_number], key=lambda x: x.created_at, reverse=True)
+        for proj_num in sorted(project_groups.keys(), key=lambda x: (x == "No Project Number", x)):
+            assessments_in_project = sorted(project_groups[proj_num], key=lambda x: x.created_at, reverse=True)
             
             # Project header
             st.markdown(f"""
@@ -1962,7 +1962,7 @@ def render_past_assessments(db: Session, user: User):
                 box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
             ">
                 <h3 style="margin: 0; color: white; font-weight: 700; font-size: 1.4rem;">
-                    📁 Project: {project_number}
+                    📁 Project: {proj_num}
                 </h3>
                 <p style="margin: 0.5rem 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 0.95rem;">
                     {len(assessments_in_project)} version{'' if len(assessments_in_project) == 1 else 's'} • 
@@ -2014,6 +2014,18 @@ def render_past_assessments(db: Session, user: User):
                             <p style="color: #0f172a; margin: 0.25rem 0 0 0; font-weight: 600; font-size: 0.85rem;">{assessment.risk_type[:30] if assessment.risk_type else 'N/A'}...</p>
                         </div>
                         """, unsafe_allow_html=True)
+                    
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    
+                    # Display uploaded documents
+                    if assessment.uploaded_files:
+                        st.markdown("**📄 Documents Used:**")
+                        docs_list = assessment.uploaded_files if isinstance(assessment.uploaded_files, list) else []
+                        if docs_list:
+                            for doc_name in docs_list:
+                                st.markdown(f"- {doc_name}")
+                        else:
+                            st.caption("No documents recorded")
                     
                     st.markdown("<br>", unsafe_allow_html=True)
                     
@@ -2134,10 +2146,14 @@ def render_past_assessments(db: Session, user: User):
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Download buttons
-                col_download1, col_download2, col_spacer = st.columns([1, 1, 2])
-                
-                with col_download1:
+            # Display uploaded documents in standard view
+            if assessment.uploaded_files:
+                docs_list = assessment.uploaded_files if isinstance(assessment.uploaded_files, list) else []
+                if docs_list:
+                    st.markdown("**📄 Documents Used:**")
+                    st.markdown(" • ".join(docs_list))
+                    st.markdown("<br>", unsafe_allow_html=True)
+            
                     # PDF Download
                     filename, content, mime = create_pdf_download(
                         assessment.assessment_report,
