@@ -1111,7 +1111,57 @@ def create_reportlab_table(table_data):
         for cell in row:
             # Clean and wrap cell text
             cell_text = str(cell).strip()
+            
+            # Replace markdown bold with HTML bold
             cell_text = cell_text.replace('**', '<b>').replace('**', '</b>')
+            
+            # Convert risk level tags to colored text
+            # Handle patterns like <b>CRITICAL<b>, <b>HIGH<b>, etc.
+            import re
+            
+            # Fix malformed tags (missing closing slash)
+            cell_text = re.sub(r'<b>(CRITICAL|HIGH|MEDIUM|LOW)<b>', r'\1', cell_text)
+            cell_text = re.sub(r'<b>(CRITICAL|HIGH|MEDIUM|LOW)</b>', r'\1', cell_text)
+            
+            # Apply color formatting for risk levels
+            cell_text = re.sub(
+                r'\b(CRITICAL)\b',
+                r'<font color="#dc2626" size="8"><b>\1</b></font>',
+                cell_text
+            )
+            cell_text = re.sub(
+                r'\b(HIGH)\b',
+                r'<font color="#ea580c" size="8"><b>\1</b></font>',
+                cell_text
+            )
+            cell_text = re.sub(
+                r'\b(MEDIUM)\b',
+                r'<font color="#ca8a04" size="8"><b>\1</b></font>',
+                cell_text
+            )
+            cell_text = re.sub(
+                r'\b(LOW)\b',
+                r'<font color="#16a34a" size="8"><b>\1</b></font>',
+                cell_text
+            )
+            
+            # Handle P0, P1, P2 priority labels
+            cell_text = re.sub(
+                r'\b(P0)\b',
+                r'<font color="#dc2626" size="8"><b>\1</b></font>',
+                cell_text
+            )
+            cell_text = re.sub(
+                r'\b(P1)\b',
+                r'<font color="#ea580c" size="8"><b>\1</b></font>',
+                cell_text
+            )
+            cell_text = re.sub(
+                r'\b(P2)\b',
+                r'<font color="#ca8a04" size="8"><b>\1</b></font>',
+                cell_text
+            )
+            
             try:
                 wrapped_row.append(Paragraph(cell_text, cell_style))
             except:
