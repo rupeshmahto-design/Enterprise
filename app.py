@@ -404,6 +404,43 @@ st.markdown("""
         border-left: 5px solid var(--accent-primary) !important;
     }
     
+    .framework-card.disabled {
+        background: #f9fafb !important;
+        border: 2px dashed #d1d5db !important;
+        opacity: 0.7 !important;
+        cursor: not-allowed !important;
+        position: relative;
+    }
+    
+    .framework-card.disabled:hover {
+        transform: none !important;
+        box-shadow: 0 4px 12px rgba(13, 27, 42, 0.06) !important;
+    }
+    
+    .coming-soon-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .activation-note {
+        color: #6b7280;
+        font-size: 0.85rem;
+        font-style: italic;
+        margin-top: 8px;
+        padding: 8px;
+        background: #fef3c7;
+        border-radius: 6px;
+        border-left: 3px solid #f59e0b;
+    }
+    
     /* Risk Cards */
     .risk-card {
         background: white !important;
@@ -827,6 +864,18 @@ FRAMEWORKS = {
         "focus": "Scalable threat modeling for agile development",
         "best_for": "DevSecOps, continuous threat modeling, large organizations",
         "coverage": ["Application Threat Models", "Operational Threat Models", "Infrastructure Models"]
+    }
+}
+
+# Placeholder for custom frameworks (disabled in UI for demo purposes)
+CUSTOM_FRAMEWORKS_PREVIEW = {
+    "Custom Client Framework": {
+        "description": "Your organization's proprietary security assessment framework",
+        "focus": "Tailored controls and risk categories specific to your industry",
+        "best_for": "Organization-specific compliance, industry regulations, custom security requirements",
+        "coverage": ["Custom Domain 1", "Custom Domain 2", "Custom Domain 3", "Industry-Specific Controls"],
+        "status": "coming_soon",
+        "activation_note": "This feature can be activated for your organization. Contact your administrator to upload your custom framework."
     }
 }
 
@@ -1771,6 +1820,7 @@ def render_threat_assessment_form(db: Session, user: User):
     framework_cols = st.columns(2)
     selected_framework = None
     
+    # Display active frameworks
     for idx, (framework, details) in enumerate(FRAMEWORKS.items()):
         col = framework_cols[idx % 2]
         with col:
@@ -1791,6 +1841,27 @@ def render_threat_assessment_form(db: Session, user: User):
                     <p>{details['description'][:100]}...</p>
                 </div>
                 """, unsafe_allow_html=True)
+    
+    # Display custom framework preview (disabled)
+    for idx, (framework, details) in enumerate(CUSTOM_FRAMEWORKS_PREVIEW.items()):
+        col = framework_cols[(len(FRAMEWORKS) + idx) % 2]
+        with col:
+            st.checkbox(
+                framework, 
+                key=f"framework_custom_{framework}", 
+                disabled=True,
+                help=details['activation_note']
+            )
+            st.markdown(f"""
+            <div class='framework-card disabled'>
+                <h4>{framework} <span class='coming-soon-badge'>Coming Soon</span></h4>
+                <p><strong>Focus:</strong> {details['focus']}</p>
+                <p><strong>Best For:</strong> {details['best_for']}</p>
+                <div class='activation-note'>
+                    💡 {details['activation_note']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
     
     # Risk Focus Areas
     st.markdown("## 🎲 Select Risk Focus Areas")
