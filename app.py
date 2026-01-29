@@ -2162,17 +2162,17 @@ def render_past_assessments(db: Session, user: User):
             with col_download1:
                 # PDF Download
                 filename, content, mime = create_pdf_download(
-                        assessment.assessment_report,
-                        assessment.project_name
-                    )
-                    st.download_button(
-                        "📄 Download PDF",
-                        content,
-                        file_name=filename,
-                        mime=mime,
-                        key=f"pdf_{assessment.id}",
-                        use_container_width=True
-                    )
+                    assessment.assessment_report,
+                    assessment.project_name
+                )
+                st.download_button(
+                    "📄 Download PDF",
+                    content,
+                    file_name=filename,
+                    mime=mime,
+                    key=f"pdf_{assessment.id}",
+                    use_container_width=True
+                )
                 
                 with col_download2:
                     # Markdown Download
