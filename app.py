@@ -2156,8 +2156,12 @@ def render_past_assessments(db: Session, user: User):
                     st.markdown(" • ".join(docs_list))
                     st.markdown("<br>", unsafe_allow_html=True)
             
-                    # PDF Download
-                    filename, content, mime = create_pdf_download(
+            # Download buttons
+            col_download1, col_download2, col_spacer = st.columns([1, 1, 2])
+            
+            with col_download1:
+                # PDF Download
+                filename, content, mime = create_pdf_download(
                         assessment.assessment_report,
                         assessment.project_name
                     )
