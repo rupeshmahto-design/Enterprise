@@ -1546,7 +1546,13 @@ Generate the complete, detailed, professionally formatted threat assessment repo
 
     report = message.content[0].text if message.content else "No content returned"
 
-    # Save to database
+    # Calculate risk counts once and cache them
+    report_upper = report.upper()
+    critical_count = report_upper.count("CRITICAL")
+    high_count = report_upper.count("HIGH")
+    medium_count = report_upper.count("MEDIUM")
+
+    # Save to database with cached risk counts
     assessment = ThreatAssessment(
         organization_id=user.organization_id,
         user_id=user.id,
@@ -1559,7 +1565,10 @@ Generate the complete, detailed, professionally formatted threat assessment repo
         report_html=report,
         report_meta={"framework": framework, "risk_areas": risk_areas},
         uploaded_files=[f.name for f in st.session_state.get('current_uploaded_files', [])],
-        status="completed"
+        status="completed",
+        critical_count=critical_count,
+        high_count=high_count,
+        medium_count=medium_count
     )
     db.add(assessment)
     db.commit()
@@ -1997,31 +2006,39 @@ def render_past_assessments(db: Session, user: User):
     st.markdown("# 📚 Past Assessments")
     st.markdown('<p style="color: #64748b; font-size: 1.05rem; margin-bottom: 2rem;">View and manage all your threat assessment reports with version history</p>', unsafe_allow_html=True)
     
-    # Get all assessments for this user
-    all_assessments = (
-        db.query(ThreatAssessment)
-        .filter(ThreatAssessment.user_id == user.id)
-        .order_by(ThreatAssessment.created_at.desc())
-        .all()
-    )
+    # Get summary metrics using efficient database queries
+    from sqlalchemy import func, distinct
+    from datetime import timedelta
     
-    if not all_assessments:
+    total_count = db.query(func.count(ThreatAssessment.id)).filter(ThreatAssessment.user_id == user.id).scalar()
+    
+    if total_count == 0:
         st.info("🔍 No past assessments yet. Create your first threat assessment in the 'Threat Modeling' tab!")
         return
     
-    # Summary metrics at the top
+    # Summary metrics using database aggregation
     metric_col1, metric_col2, metric_col3, metric_col4 = st.columns(4)
     with metric_col1:
-        st.metric("📊 Total Assessments", len(all_assessments))
+        st.metric("📊 Total Assessments", total_count)
     with metric_col2:
-        completed = len([a for a in all_assessments if a.status == "completed"])
+        completed = db.query(func.count(ThreatAssessment.id)).filter(
+            ThreatAssessment.user_id == user.id,
+            ThreatAssessment.status == "completed"
+        ).scalar()
         st.metric("✅ Completed", completed)
     with metric_col3:
-        recent = len([a for a in all_assessments if (datetime.utcnow() - a.created_at).days <= 7])
+        cutoff_date = datetime.utcnow() - timedelta(days=7)
+        recent = db.query(func.count(ThreatAssessment.id)).filter(
+            ThreatAssessment.user_id == user.id,
+            ThreatAssessment.created_at >= cutoff_date
+        ).scalar()
         st.metric("🕐 Last 7 Days", recent)
     with metric_col4:
-        # Count unique projects with project numbers
-        unique_projects = len(set([a.project_number for a in all_assessments if a.project_number]))
+        unique_projects = db.query(func.count(distinct(ThreatAssessment.project_number))).filter(
+            ThreatAssessment.user_id == user.id,
+            ThreatAssessment.project_number.isnot(None),
+            ThreatAssessment.project_number != ""
+        ).scalar()
         st.metric("🔢 Unique Projects", unique_projects)
     
     st.markdown("<br>", unsafe_allow_html=True)
@@ -2050,14 +2067,22 @@ def render_past_assessments(db: Session, user: User):
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        # Get unique frameworks
-        frameworks = sorted(list(set([a.framework for a in all_assessments if a.framework])))
+        # Get unique frameworks using database query
+        frameworks_query = db.query(distinct(ThreatAssessment.framework)).filter(
+            ThreatAssessment.user_id == user.id,
+            ThreatAssessment.framework.isnot(None)
+        ).order_by(ThreatAssessment.framework).all()
+        frameworks = [f[0] for f in frameworks_query]
         framework_options = ["All"] + frameworks
         framework_filter = st.selectbox("Framework", framework_options, index=0, key="framework_filter")
     
     with col2:
-        # Get unique risk types
-        risk_types = sorted(list(set([a.risk_type for a in all_assessments if a.risk_type])))
+        # Get unique risk types using database query
+        risk_types_query = db.query(distinct(ThreatAssessment.risk_type)).filter(
+            ThreatAssessment.user_id == user.id,
+            ThreatAssessment.risk_type.isnot(None)
+        ).order_by(ThreatAssessment.risk_type).all()
+        risk_types = [r[0] for r in risk_types_query]
         risk_options = ["All"] + risk_types
         risk_filter = st.selectbox("Risk Type", risk_options, index=0, key="risk_filter")
     
@@ -2069,27 +2094,29 @@ def render_past_assessments(db: Session, user: User):
         # Date range
         date_filter = st.selectbox("Date Range", ["All Time", "Last 7 Days", "Last 30 Days", "Last 90 Days"], index=0, key="date_filter")
     
-    # Apply filters
-    filtered_assessments = all_assessments
+    # Build query with filters at database level
+    query = db.query(ThreatAssessment).filter(ThreatAssessment.user_id == user.id)
     
     if framework_filter != "All":
-        filtered_assessments = [a for a in filtered_assessments if a.framework == framework_filter]
+        query = query.filter(ThreatAssessment.framework == framework_filter)
     
     if risk_filter != "All":
-        filtered_assessments = [a for a in filtered_assessments if a.risk_type == risk_filter]
+        query = query.filter(ThreatAssessment.risk_type == risk_filter)
     
     if status_filter != "All":
-        filtered_assessments = [a for a in filtered_assessments if a.status == status_filter]
+        query = query.filter(ThreatAssessment.status == status_filter)
     
     if date_filter != "All Time":
-        from datetime import timedelta
-        now = datetime.utcnow()
         days_map = {"Last 7 Days": 7, "Last 30 Days": 30, "Last 90 Days": 90}
-        cutoff = now - timedelta(days=days_map[date_filter])
-        filtered_assessments = [a for a in filtered_assessments if a.created_at >= cutoff]
+        cutoff = datetime.utcnow() - timedelta(days=days_map[date_filter])
+        query = query.filter(ThreatAssessment.created_at >= cutoff)
+    
+    # Get filtered count and assessments
+    filtered_count = query.count()
+    filtered_assessments = query.order_by(ThreatAssessment.created_at.desc()).all()
     
     # Display count
-    st.markdown(f'<p style="color: #64748b; font-weight: 600; margin: 1.5rem 0 1rem 0;">Showing {len(filtered_assessments)} of {len(all_assessments)} assessments</p>', unsafe_allow_html=True)
+    st.markdown(f'<p style="color: #64748b; font-weight: 600; margin: 1.5rem 0 1rem 0;">Showing {filtered_count} of {total_count} assessments</p>', unsafe_allow_html=True)
     
     if not filtered_assessments:
         st.info("No assessments match the selected filters.")
@@ -2135,11 +2162,10 @@ def render_past_assessments(db: Session, user: User):
             for idx, assessment in enumerate(assessments_in_project, 1):
                 version_number = len(assessments_in_project) - idx + 1
                 
-                # Extract risk summary
-                report_text = assessment.assessment_report or ""
-                critical_count = report_text.upper().count("CRITICAL")
-                high_count = report_text.upper().count("HIGH")
-                medium_count = report_text.upper().count("MEDIUM")
+                # Use cached risk counts (much faster than parsing report text)
+                critical_count = assessment.critical_count or 0
+                high_count = assessment.high_count or 0
+                medium_count = assessment.medium_count or 0
                 
                 # Version card with collapsible details
                 with st.expander(
@@ -2252,11 +2278,10 @@ def render_past_assessments(db: Session, user: User):
     else:
         # Display assessments in standard list view
         for assessment in filtered_assessments:
-            # Extract risk summary from report
-            report_text = assessment.assessment_report or ""
-            critical_count = report_text.upper().count("CRITICAL")
-            high_count = report_text.upper().count("HIGH")
-            medium_count = report_text.upper().count("MEDIUM")
+            # Use cached risk counts (much faster than parsing report text)
+            critical_count = assessment.critical_count or 0
+            high_count = assessment.high_count or 0
+            medium_count = assessment.medium_count or 0
             
             # Create professional assessment card
             with st.container():

@@ -217,8 +217,8 @@ class ThreatAssessment(Base):
     # Assessment details
     project_name = Column(String(255), nullable=False)
     project_number = Column(String(100), index=True)  # For grouping assessments by project
-    framework = Column(String(50), nullable=False)  # STRIDE, MITRE ATT&CK, etc.
-    risk_type = Column(String(50))  # Agentic AI, Model Risk, etc.
+    framework = Column(String(50), nullable=False, index=True)  # STRIDE, MITRE ATT&CK, etc.
+    risk_type = Column(String(50), index=True)  # Agentic AI, Model Risk, etc.
     
     # Content
     system_description = Column(Text)
@@ -226,11 +226,16 @@ class ThreatAssessment(Base):
     report_html = Column(Text)  # HTML version
     report_meta = Column(JSON)  # Risk scores, counts, etc.
     
+    # Risk count cache (computed once, stored for fast retrieval)
+    critical_count = Column(Integer, default=0)
+    high_count = Column(Integer, default=0)
+    medium_count = Column(Integer, default=0)
+    
     # Files
     uploaded_files = Column(JSON)  # List of uploaded file names
     
     # Status
-    status = Column(String(20), default='completed')  # draft, in_progress, completed
+    status = Column(String(20), default='completed', index=True)  # draft, in_progress, completed
     
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False, index=True)
